@@ -12,8 +12,8 @@ tool is **config-driven**, so you can point it at any city (see *Run it for your
 
 | Page | What it shows |
 |---|---|
-| `index.html` | Overlay viewer — pick a ward, compare drive/bicycle/walk sheds, toggle time-of-day & budget |
-| `explore.html` | Hover explorer — move the mouse and the nearest origin point's sheds appear live |
+| `index.html` | Hover explorer — move the mouse and the nearest origin point's sheds appear live |
+| `compare.html` | Overlay viewer — pick a ward, compare drive/bicycle/walk sheds, toggle time-of-day & budget |
 | `categories.html` | Ward choropleth — where cycling is competitive, where driving wins, and where the street network itself limits cars |
 
 ## Headline finding (Bengaluru, 15-minute budget)
@@ -67,11 +67,11 @@ python scripts/01c_probe_peak.py             # find the real AM/PM peak hours (s
 python scripts/02_fetch_reachable_range.py   # fetch car sheds from TomTom (resumable; --max-calls to cap/day)
 python scripts/02b_compute_active_sheds.py   # compute bicycle/walk sheds on the OSM network (no API)
 python scripts/03_compute_area_comparison.py # areas, per-ward unions, summary
-python scripts/04_build_viewer.py            # overlay viewer   -> docs/index.html
+python scripts/04_build_viewer.py            # overlay viewer   -> docs/compare.html
 python scripts/05_export_shed_shapefiles.py  # ESRI shapefiles + zip
 python scripts/06_qaqc_checks.py             # sanity report (band nesting, free-flow >= peak, ...)
 python scripts/07_build_bike_car_category_map.py  # ward choropleth -> docs/categories.html
-python scripts/08_build_hover_isochrone_map.py    # hover explorer  -> docs/explore.html
+python scripts/08_build_hover_isochrone_map.py    # hover explorer  -> docs/index.html
 ```
 
 The car fetch is larger than one free-tier day (~4,100 calls for 515 points × 4 scenarios ×
@@ -102,7 +102,7 @@ Notes for other cities:
 ## Publish to GitHub Pages
 
 Commit the repo and, in **Settings → Pages**, set the source to the **`main` branch, `/docs`
-folder**. The viewers are served at `https://<user>.github.io/<repo>/`, `/explore.html`, and
+folder**. The viewers are served at `https://<user>.github.io/<repo>/`, `/compare.html`, and
 `/categories.html`.
 
 ## Notes & attribution

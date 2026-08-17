@@ -547,6 +547,6 @@ with open(OUT_HTML, "w", encoding="utf-8") as f:
     f.write(html)
 print(f"\nWrote {OUT_HTML}  ({os.path.getsize(OUT_HTML):,} bytes)")
 
-DOCS_HTML = os.path.join(cfg.DOCS_DIR, "explore.html")
+DOCS_HTML = os.path.join(cfg.DOCS_DIR, "index.html")   # the landing page
 shutil.copyfile(OUT_HTML, DOCS_HTML)
 print(f"Copied to GitHub Pages dir: {DOCS_HTML}")

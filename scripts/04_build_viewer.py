@@ -31,7 +31,7 @@ SHEDS  = os.path.join(cfg.WARDS_DIR, f"{SHORT}_ward_sheds.geojson")
 SUMMARY = os.path.join(cfg.ANALYSIS_DIR, f"{SHORT}_summary.json")
 OUT_DIR = os.path.join(cfg.OUTPUT_DIR, f"{cfg.CITY_SHORT}_Multimodal_Viewer")
 OUT_HTML = os.path.join(OUT_DIR, "index.html")
-DOCS_HTML = os.path.join(cfg.DOCS_DIR, "index.html")
+DOCS_HTML = os.path.join(cfg.DOCS_DIR, "compare.html")   # landing page is the hover explorer (stage 08)
 os.makedirs(OUT_DIR, exist_ok=True)
 
 wards = gpd.read_file(WARDS)
