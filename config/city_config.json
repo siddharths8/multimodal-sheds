@@ -1,0 +1,33 @@
+{
+  "city_name": "Bengaluru",
+  "city_short": "BLR",
+  "wards_geojson_url": "https://raw.githubusercontent.com/datameet/Municipal_Spatial_Data/master/Bangalore/BBMP_oldWards.geojson",
+  "wards_local_filename": "BBMP_oldWards.geojson",
+  "ward_no_field": "WARD_NO",
+  "ward_name_field": "WARD_NAME",
+  "zone_field": "ASS_CONST1",
+  "center_latlon": [12.9716, 77.5946],
+  "default_zoom": 11,
+  "bands_min": [15, 20],
+  "speeds_kmph": { "pedestrian": 4.8, "bicycle": 12 },
+  "road_intersections": {
+    "overpass_url": "https://overpass-api.de/api/interpreter",
+    "major_road_classes": ["motorway", "trunk", "primary", "secondary", "tertiary"]
+  },
+  "departures": {
+    "probe": {
+      "enabled": true,
+      "probe_date": "2026-07-01",
+      "tz_offset": "+05:30",
+      "probe_band_sec": 900,
+      "n_probe_points": 3,
+      "am_candidates": ["07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00"],
+      "pm_candidates": ["16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"],
+      "midday_candidates": ["11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00"]
+    },
+    "fallback_am_peak": "08:30",
+    "fallback_pm_peak": "18:30",
+    "fallback_midday": "14:00"
+  },
+  "attribution": "Ward boundaries: DataMeet Municipal Spatial Data (CC BY 4.0). Reachable-range sheds: TomTom Routing API."
+}

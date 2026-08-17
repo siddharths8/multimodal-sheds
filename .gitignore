@@ -1,0 +1,26 @@
+# Never commit API keys / secrets
+.env
+*.key
+**/secrets*
+
+# Cached TomTom responses (regenerable, large, and tied to your key/quota)
+data/sheds/
+
+# Python cruft
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS cruft
+Thumbs.db
+.DS_Store
+
+# All fetched/derived data is regenerable from the pipeline (and one OSM cache
+# file exceeds GitHub's 100MB per-file limit) — a fresh clone rebuilds it.
+data/
+
+# Build outputs regenerate from the pipeline; the public viewers live in docs/
+output/
+
+# Local editor/session config
+.claude/

@@ -1,0 +1,40 @@
+{
+  "city_name": "Tokyo",
+  "city_short": "TKY",
+  "wards_geojson_url": "",
+  "wards_local_filename": "tokyo_wards.geojson",
+  "ward_no_field": "WARD_NO",
+  "ward_name_field": "WARD_NAME",
+  "zone_field": null,
+  "center_latlon": [35.7100, 139.7700],
+  "default_zoom": 13,
+  "bands_min": [15],
+  "speeds_kmph": { "pedestrian": 4.8, "bicycle": 12 },
+  "road_intersections": {
+    "overpass_url": "https://overpass-api.de/api/interpreter",
+    "major_road_classes": ["motorway", "trunk", "primary", "secondary", "tertiary"]
+  },
+  "departures": {
+    "probe": {
+      "enabled": false,
+      "probe_date": "2026-07-01",
+      "tz_offset": "+09:00",
+      "probe_band_sec": 900,
+      "n_probe_points": 3,
+      "am_candidates": ["08:00", "09:00"],
+      "pm_candidates": ["17:30", "18:30"],
+      "midday_candidates": ["13:00"]
+    },
+    "fallback_am_peak": "08:30",
+    "fallback_pm_peak": "18:00",
+    "fallback_midday": "13:00"
+  },
+  "sample_points": [
+    ["tk_yanaka",     "Yanaka (old town)",   139.7666, 35.7268],
+    ["tk_nezu",       "Nezu",                139.7649, 35.7203],
+    ["tk_asakusa",    "Asakusa / Senso-ji",  139.7967, 35.7148],
+    ["tk_kagurazaka", "Kagurazaka",          139.7400, 35.7016],
+    ["tk_tsukishima", "Tsukishima (narrow lanes)", 139.7833, 35.6655]
+  ],
+  "attribution": "Roads/network: OpenStreetMap. Driving sheds: TomTom Routing API."
+}
