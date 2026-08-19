@@ -183,7 +183,8 @@ function setHeadline(){
 
 // ---- map ----
 const center = [__CENTERLON__, __CENTERLAT__];
-const map = new mapboxgl.Map({container:'map', style:'mapbox://styles/mapbox/light-v11', center, zoom:__ZOOM__});
+const map = new mapboxgl.Map({container:'map', style:'mapbox://styles/mapbox/light-v11', center, zoom:__ZOOM__,
+  customAttribution: 'Drive sheds © <a href="https://www.tomtom.com/" target="_blank">TomTom</a> · bicycle/walk sheds © OpenStreetMap'});
 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
 function addLayers(){

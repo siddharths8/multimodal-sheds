@@ -249,7 +249,8 @@ const ROAD_COLOR = ['match', ['get','highway'],
   ['primary','primary_link'], '#555555', ['secondary','secondary_link'], '#767676', '#9a9a9a'];
 
 const center = [__CENTERLON__, __CENTERLAT__];
-const map = new mapboxgl.Map({container:'map', style:'mapbox://styles/mapbox/light-v11', center, zoom:__ZOOM__});
+const map = new mapboxgl.Map({container:'map', style:'mapbox://styles/mapbox/light-v11', center, zoom:__ZOOM__,
+  customAttribution: 'Ward metrics from © <a href="https://www.tomtom.com/" target="_blank">TomTom</a> &amp; © OpenStreetMap travel sheds'});
 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
 function catOf(wardNo){ const la=(LOOKUP[wardNo]||{})[band]; return la? la.category : null; }

@@ -385,7 +385,8 @@ function nearestPoint(lng, lat){
 }
 
 const center = [__CENTERLON__, __CENTERLAT__];
-const map = new mapboxgl.Map({container:'map', style: BASEMAP_URL, center, zoom:__ZOOM__});
+const map = new mapboxgl.Map({container:'map', style: BASEMAP_URL, center, zoom:__ZOOM__,
+  customAttribution: 'Drive sheds © <a href="https://www.tomtom.com/" target="_blank">TomTom</a> · bicycle/walk sheds © OpenStreetMap'});
 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
 // ---- SVG overlay: isochrones + origin dot + all-points, independent of the
