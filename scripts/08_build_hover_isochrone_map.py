@@ -121,6 +121,20 @@ MODES = cfg.MODES
 
 BASEMAP_URL = "mapbox://styles/mapbox/outdoors-v12"
 
+
+def _clock_label(iso):
+    """'2026-07-01T17:30:00+05:30' -> '5:30 PM' (plain-language button labels)."""
+    hh, mm = int(iso[11:13]), iso[14:16]
+    ampm = "AM" if hh < 12 else "PM"
+    h12 = hh % 12 or 12
+    return f"{h12} {ampm}" if mm == "00" else f"{h12}:{mm} {ampm}"
+
+
+# Buttons show real clock times (from the empirically probed peaks), not
+# planner jargon — "AM peak" means nothing to the average map visitor.
+for s in CAR_SCEN:
+    s["label"] = "No traffic" if s["key"] == "free_flow" else _clock_label(s["departAt"])
+
 # ---- arterial road network (cache built by stage 07, reused here) ---------
 ROADS_CACHE = os.path.join(cfg.WARDS_DIR, f"{SHORT}_major_roads.geojson")
 if not os.path.exists(ROADS_CACHE):
@@ -315,15 +329,15 @@ h3{font-size:9.5px;color:var(--text-muted);font-weight:700;text-transform:upperc
     <div class="tgl" id="panelTgl">&#8722;</div>
   </div>
   <div class="panel-bd" id="panelBd">
-    <label class="chk"><input type="checkbox" id="monoToggle" checked> Monochrome basemap</label>
-    <h3>Driving — time of day</h3>
+    <label class="chk"><input type="checkbox" id="monoToggle"> Monochrome basemap</label>
+    <h3>What time of the day are you driving?</h3>
     <div class="seg" id="scen"></div>
-    <h3>Modes</h3>
+    <h3>How much area can you cover?</h3>
     <div id="modes"></div>
-    <input type="range" id="op" min="0.15" max="0.85" step="0.05" value="0.45">
+    <input type="range" id="op" min="0.1" max="0.85" step="0.05" value="0.25">
     <h3>Bicycle vs. car</h3>
     <div class="rule-note">The bicycle shed is better if it reaches at least 75% of the car's
-      travel shed (at either AM or PM peak).</div>
+      travel shed, during the rush hours.</div>
     __ZONE_HTML__
     <div class="stat" id="stat"><div class="hint">Move the mouse over the map — the nearest of
       __NPTS__ origin points snaps in and its sheds appear.</div></div>
@@ -332,7 +346,8 @@ h3{font-size:9.5px;color:var(--text-muted);font-weight:700;text-transform:upperc
 
 <div class="hover-tip"><b>As you zoom in, hover over the dots that appear and see how far you can
   travel by each mode as you explore the city!</b> <i>Sheds only exist at __NPTS__ pre-computed
-  locations and this does not connect to any API.</i></div>
+  locations and this does not connect to an API. For bicycling &amp; walking conservative speeds
+  have been used.</i></div>
 
 <script>
 mapboxgl.accessToken = '__TOKEN__';
@@ -380,7 +395,7 @@ const IDX = {};
 SHEDS.features.forEach(f => { const p = f.properties;
   IDX[`${p.pt_id}|${p.mode}|${p.scenario}`] = f; });
 
-let state = { scen: CARSCEN[0].key, vis:{car:true,bicycle:true,pedestrian:true}, op:0.45, pt:null };
+let state = { scen: CARSCEN[0].key, vis:{car:true,bicycle:true,pedestrian:true}, op:0.25, pt:null };
 const fmt = v => (v==null? '—' : v.toFixed(1));
 
 function scenKeyForMode(m){ return m==='car' ? state.scen : 'na'; }
@@ -399,7 +414,6 @@ function nearestPoint(lng, lat){
 const center = [__CENTERLON__, __CENTERLAT__];
 const map = new mapboxgl.Map({container:'map', style: BASEMAP_URL, center, zoom:__ZOOM__});
 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-document.getElementById('map').classList.add('mono');
 
 // ---- SVG overlay: isochrones + origin dot + all-points, independent of the
 // Mapbox style/canvas so mix-blend-mode:multiply can react to the basemap
@@ -409,10 +423,14 @@ const svg = document.getElementById('overlaySvg');
 function svgEl(tag, attrs){ const e = document.createElementNS(svgNS, tag);
   for (const k in attrs) e.setAttribute(k, attrs[k]); return e; }
 
+// Cut-paper cartography (after regio.toekom.st): light wash fill + crisp,
+// fully opaque border in a darker step of the same hue.
+const STROKE = {car:'#801619', bicycle:'#8F6C02', pedestrian:'#153E8F'};
 const pathByMode = {};
 MODE_ORDER.forEach(m => {
-  pathByMode[m] = svgEl('path', {fill: MODES[m].color, stroke: MODES[m].color,
-    'stroke-width': 1.4, 'fill-opacity': state.op, 'stroke-opacity': 0.9});
+  pathByMode[m] = svgEl('path', {fill: MODES[m].color, stroke: STROKE[m],
+    'stroke-width': 2, 'fill-opacity': state.op, 'stroke-opacity': 1,
+    'stroke-linejoin': 'round'});
   svg.appendChild(pathByMode[m]);
 });
 const gAllPoints = svgEl('g', {});
