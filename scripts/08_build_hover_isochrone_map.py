@@ -234,6 +234,13 @@ TEMPLATE = r"""<!DOCTYPE html>
 <html><head><meta charset="utf-8">
 <title>__TITLE__ — hover to compare drive/bicycle/walk</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="description" content="How far can you go in 15 minutes? Hover anywhere in __TITLE__ to compare driving (with real traffic), bicycling and walking reach from 515 locations.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://siddharths8.github.io/multimodal-sheds/">
+<meta property="og:title" content="__TITLE__ — how far can you go in 15 minutes?">
+<meta property="og:description" content="Hover anywhere on the map to compare how much of the city a car (in real traffic), a bicycle and your feet can reach in 15 minutes — from 515 sampled locations.">
+<meta property="og:image" content="https://siddharths8.github.io/multimodal-sheds/preview.png">
+<meta name="twitter:card" content="summary_large_image">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
