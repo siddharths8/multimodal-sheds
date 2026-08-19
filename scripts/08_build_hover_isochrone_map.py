@@ -357,39 +357,12 @@ const MODES = __MODES_JSON__;
 const MODE_ORDER = __MODEORDER_JSON__;
 const CARSCEN = __CARSCEN_JSON__;
 const BASEMAP_URL = '__BASEMAP_URL__';
-const ROADS = __ROADS_JSON__;
 const POINTS_MIN_ZOOM = 12.5;
-
-// ---- arterial road network: a native Mapbox GL layer (large static dataset,
-// so let WebGL handle it rather than SVG). style.load also covers the one
-// initial style load, so this is the only place layers get added. ----------
-// Single-ink cartography: hierarchy is carried by WIDTH and OPACITY, not by
-// darkness, so the road mesh recedes behind the data instead of competing
-// with the origin dots for "blackest thing on screen". Tertiary streets only
-// fade in past the same zoom where the origin dots appear.
-const ROAD_MAIN = ['motorway','motorway_link','trunk','trunk_link','primary','primary_link','secondary','secondary_link'];
-const ROAD_MINOR = ['tertiary','tertiary_link'];
-const ROAD_INK = '#77776f';   // faint gray ink — orientation only, never competes with sheds
-const ROAD_WIDTH = ['interpolate', ['linear'], ['zoom'],
-  10, ['match', ['get','highway'], ['motorway','motorway_link'],1.6, ['trunk','trunk_link'],1.4,
-        ['primary','primary_link'],1.0, 0.5],
-  15, ['match', ['get','highway'], ['motorway','motorway_link'],4.2, ['trunk','trunk_link'],3.6,
-        ['primary','primary_link'],2.6, 1.6]];
-const ROAD_OPACITY = ['match', ['get','highway'],
-  ['motorway','motorway_link'], 0.35, ['trunk','trunk_link'], 0.28,
-  ['primary','primary_link'], 0.2, 0.14];
-
-function addRoadLayer(){
-  if (map.getSource('roads')) return;
-  map.addSource('roads', {type:'geojson', data: ROADS});
-  map.addLayer({id:'roads-minor', type:'line', source:'roads', minzoom: 12.5,
-    filter: ['in', ['get','highway'], ['literal', ROAD_MINOR]],
-    paint:{'line-color': ROAD_INK, 'line-width': 0.6, 'line-opacity': 0.1}});
-  map.addLayer({id:'roads-line', type:'line', source:'roads',
-    filter: ['in', ['get','highway'], ['literal', ROAD_MAIN]],
-    layout:{'line-cap':'round', 'line-join':'round'},
-    paint:{'line-color': ROAD_INK, 'line-width': ROAD_WIDTH, 'line-opacity': ROAD_OPACITY}});
-}
+// Roads come from the basemap itself — Mapbox's own rendering is merged,
+// cased, generalized per zoom, and labeled (street names + highway shields),
+// so a custom overlay of raw OSM segments only adds ghosting and junction
+// artifacts on top of it. The OSM road cache is still used at BUILD time for
+// the inner/outer-ORR ward split.
 
 const IDX = {};
 SHEDS.features.forEach(f => { const p = f.properties;
@@ -480,7 +453,6 @@ function updateOverlay(){
 map.on('render', updateOverlay);
 map.on('resize', () => { resizeSvg(); updateOverlay(); });
 map.on('load', () => { resizeSvg(); updateOverlay(); });
-map.on('style.load', addRoadLayer);
 
 let raf = null;
 map.on('mousemove', e => {
@@ -558,7 +530,6 @@ html = (TEMPLATE
         .replace("__MODEORDER_JSON__", json.dumps(MODE_ORDER))
         .replace("__CARSCEN_JSON__", json.dumps(CAR_SCEN))
         .replace("__BASEMAP_URL__", BASEMAP_URL)
-        .replace("__ROADS_JSON__", json.dumps(roads_geojson))
         .replace("__ZONE_HTML__", ZONE_HTML))
 
 with open(OUT_HTML, "w", encoding="utf-8") as f:
